@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <meta name="description" content="A friendly, practical guide for students taking a project idea from first question to a published GitHub Pages site.">
+  <title>Make a project, step by step</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f5f1;
+      --surface: #fffefa;
+      --ink: #202a28;
+      --muted: #66736e;
+      --line: #e3e5dc;
+      --green: #275d4c;
+      --green-dark: #174536;
+      --mint: #e6f0e8;
+      --lime: #d5eea4;
+      --peach: #f8e7d9;
+      --lavender: #efecf7;
+      --shadow: 0 16px 44px rgb(34 52 43 / 7%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+    body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.6; }
+    a { color: var(--green); text-underline-offset: 3px; }
+    a:hover { color: var(--green-dark); }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #9acb71; outline-offset: 3px; }
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 750; letter-spacing: -.02em; }
+    .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 12px; background: var(--green); color: white; font-size: 18px; }
+    .top-note { color: var(--muted); font-size: 12px; }
+    .hero { position: relative; overflow: hidden; padding: clamp(28px, 6vw, 66px); border: 1px solid #dfe5d8; border-radius: 28px; background: linear-gradient(118deg, #e8f1e5 0%, #f0f0e4 58%, #f5eadf 100%); }
+    .hero::after { position: absolute; right: 8%; bottom: -128px; width: 290px; height: 290px; border: 1px solid rgb(39 93 76 / 13%); border-radius: 50%; box-shadow: 0 0 0 30px rgb(39 93 76 / 4%), 0 0 0 62px rgb(39 93 76 / 3%); content: ""; pointer-events: none; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .eyebrow::before { width: 8px; height: 8px; border-radius: 50%; background: #83a84c; content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 700px; margin-bottom: 18px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(42px, 7vw, 76px); font-weight: 500; letter-spacing: -.055em; line-height: .99; }
+    h1 span { color: var(--green); }
+    .hero-copy { max-width: 570px; margin-bottom: 26px; color: #52625a; font-size: clamp(15px, 2vw, 18px); }
+    .button-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 9px; padding: 0 17px; border: 1px solid var(--green); border-radius: 999px; background: var(--green); color: white; font-size: 13px; font-weight: 750; text-decoration: none; transition: transform .16s ease, background .16s ease; }
+    .button:hover { transform: translateY(-1px); background: var(--green-dark); color: white; }
+    .button.secondary { border-color: #cbd5c9; background: rgb(255 255 255 / 65%); color: var(--ink); }
+    .button.secondary:hover { background: white; color: var(--green-dark); }
+    .layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 44px; padding: 50px 0 76px; }
+    .sidebar { position: sticky; top: 22px; align-self: start; }
+    .side-label { margin: 0 0 12px 12px; color: #88918c; font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    .side-nav { display: grid; gap: 4px; }
+    .side-nav a { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 10px; color: #53615a; font-size: 13px; font-weight: 620; text-decoration: none; }
+    .side-nav a:hover { background: #e9ece5; color: var(--green-dark); }
+    .side-nav .nav-number { width: 23px; color: #89948c; font-size: 11px; font-variant-numeric: tabular-nums; }
+    .side-progress { margin-top: 24px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .progress-head { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; font-size: 12px; font-weight: 750; }
+    .progress-head span:last-child { color: var(--green); font-variant-numeric: tabular-nums; }
+    .progress-track { height: 7px; overflow: hidden; border-radius: 99px; background: #e9ece5; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: #75a765; transition: width .25s ease; }
+    .progress-help { margin: 10px 0 0; color: var(--muted); font-size: 11px; }
+    main { min-width: 0; }
+    .section { margin-bottom: 58px; scroll-margin-top: 24px; }
+    .section-heading { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
+    .section-index { display: grid; width: 35px; height: 35px; flex: 0 0 35px; place-items: center; border-radius: 12px; background: var(--mint); color: var(--green); font-size: 12px; font-weight: 800; }
+    h2 { margin: 0 0 5px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(27px, 4vw, 36px); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+    .callout { display: flex; gap: 12px; margin: 0 0 20px; padding: 15px 17px; border: 1px solid #e2ddca; border-radius: 14px; background: #f7f2e6; color: #555444; font-size: 13px; }
+    .callout strong { color: #373b2c; }
+    .callout-icon { flex: 0 0 auto; }
+    .steps { display: grid; gap: 10px; }
+    .step { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: start; gap: 13px; padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); transition: border-color .15s ease, background .15s ease; }
+    .step:has(input:checked) { border-color: #c8dbbf; background: #fbfdf8; }
+    .step input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--green); cursor: pointer; }
+    .step h3 { margin: 0 0 4px; font-size: 14px; font-weight: 760; }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; }
+    .step-tag { align-self: center; padding: 4px 8px; border-radius: 999px; background: #f0f1eb; color: #68746a; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .info-card { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .info-card .card-kicker { margin-bottom: 8px; color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .info-card h3 { margin-bottom: 7px; font-size: 15px; }
+    .info-card p { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+    .doc-list { display: grid; gap: 10px; }
+    details.doc { overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+    details.doc[open] { border-color: #cbd9c7; }
+    details.doc summary { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 16px 18px; cursor: pointer; list-style: none; }
+    details.doc summary::-webkit-details-marker { display: none; }
+    .doc-title { display: flex; align-items: center; gap: 11px; }
+    .doc-icon { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 11px; background: var(--lavender); font-size: 15px; }
+    .doc-title strong { display: block; font-size: 13px; }
+    .doc-title small { display: block; color: var(--muted); font-size: 11px; }
+    .chevron { color: var(--muted); font-size: 15px; transition: transform .15s ease; }
+    details[open] .chevron { transform: rotate(180deg); }
+    .doc-body { padding: 0 18px 18px; }
+    .doc-body > p { color: var(--muted); font-size: 12px; }
+    pre { overflow-x: auto; margin: 0; padding: 16px; border: 1px solid #e8e8df; border-radius: 12px; background: #f7f7f1; color: #37443d; font: 12px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; }
+    .copy-row { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 9px; }
+    .copy-status { color: var(--muted); font-size: 11px; }
+    .copy-button { padding: 7px 11px; border: 1px solid #dce2d8; border-radius: 8px; background: white; color: var(--green); cursor: pointer; font: inherit; font-size: 11px; font-weight: 750; }
+    .copy-button:hover { border-color: #a9c4a4; background: #f6faf3; }
+    .mini-label { display: inline-block; margin: 12px 0 7px; color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .tool-list { display: grid; gap: 10px; }
+    .tool { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: start; gap: 13px; padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+    .tool-icon { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 13px; background: var(--mint); font-size: 18px; }
+    .tool:nth-child(2) .tool-icon { background: var(--peach); }
+    .tool:nth-child(3) .tool-icon { background: var(--lavender); }
+    .tool h3 { margin: 1px 0 4px; font-size: 14px; }
+    .tool p { margin: 0; color: var(--muted); font-size: 12px; }
+    .tool a { align-self: center; font-size: 11px; font-weight: 750; white-space: nowrap; }
+    .pill { display: inline-block; margin: 0 0 8px; padding: 3px 8px; border-radius: 99px; background: #edf1e9; color: #5e705e; font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .mcp-note { margin: 0 0 15px; color: var(--muted); font-size: 12px; }
+    .mcp-config { margin-top: 14px; }
+    .mcp-warning { margin-top: 14px; padding: 14px 16px; border-left: 3px solid #d99b62; border-radius: 0 11px 11px 0; background: #fbf2e9; color: #665444; font-size: 12px; }
+    .publish-list { display: grid; counter-reset: publish; gap: 0; }
+    .publish-item { position: relative; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 13px; padding: 0 0 20px; }
+    .publish-item:not(:last-child)::before { position: absolute; top: 36px; bottom: 0; left: 16px; width: 1px; background: #dce2d8; content: ""; }
+    .publish-num { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #d7e1d2; border-radius: 50%; background: var(--surface); color: var(--green); font-size: 11px; font-weight: 800; }
+    .publish-item h3 { margin: 3px 0 4px; font-size: 13px; }
+    .publish-item p { margin: 0; color: var(--muted); font-size: 12px; }
+    .publish-item code { padding: 2px 5px; border-radius: 4px; background: #eeefe9; font: 11px ui-monospace, Consolas, monospace; }
+    .resource-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .resource { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); font-size: 12px; font-weight: 650; text-decoration: none; }
+    .resource span:last-child { color: #89948c; font-size: 14px; }
+    .resource:hover { border-color: #becfba; color: var(--green); }
+    .footer { display: flex; justify-content: space-between; gap: 20px; padding: 20px 0 28px; border-top: 1px solid var(--line); color: #7b8580; font-size: 11px; }
+    .footer p { margin: 0; }
+    .reset-button { padding: 0; border: 0; background: none; color: var(--green); cursor: pointer; font: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    @media (max-width: 760px) {
+      .shell { width: min(calc(100% - 28px), 620px); }
+      .topbar { padding: 16px 0; }
+      .top-note { max-width: 125px; text-align: right; }
+      .hero { padding: 31px 25px; border-radius: 22px; }
+      .hero::after { right: -140px; }
+      .layout { grid-template-columns: minmax(0, 1fr); gap: 27px; padding-top: 30px; }
+      .sidebar { position: static; }
+      .side-label, .side-progress { display: none; }
+      .side-nav { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 8px; scrollbar-width: thin; }
+      .side-nav a { flex: 0 0 auto; padding: 8px 10px; background: #eeefe9; font-size: 11px; }
+      .side-nav .nav-number { display: none; }
+      .section { margin-bottom: 43px; }
+    }
+    @media (max-width: 520px) {
+      .card-grid, .resource-list { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 24px minmax(0, 1fr); gap: 10px; padding: 14px; }
+      .step-tag { display: none; }
+      .tool { grid-template-columns: 38px minmax(0, 1fr); gap: 11px; }
+      .tool-icon { width: 36px; height: 36px; }
+      .tool a { grid-column: 2; }
+      .footer { flex-direction: column; gap: 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Make a project, step by step — home"><span class="brand-mark" aria-hidden="true">↗</span> THE STUDENT PROJECT GUIDE</a>
+      <span class="top-note">A calm place to start. No coding experience needed.</span>
+    </header>
+
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <p class="eyebrow">From “what if?” to “it’s live”</p>
+      <h1 id="page-title">Make a project,<br><span>step by step.</span></h1>
+      <p class="hero-copy">Turn an idea into a small, useful first version. Plan it in plain language, get a human to review the plan, then build and share it one manageable step at a time.</p>
+      <div class="button-row">
+        <a class="button" href="#workflow">Start the walkthrough <span aria-hidden="true">→</span></a>
+        <a class="button secondary" href="#documents">Explore the starter documents</a>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar" aria-label="Guide navigation">
+        <p class="side-label">Your project path</p>
+        <nav class="side-nav">
+          <a href="#workflow"><span class="nav-number">01</span> The workflow</a>
+          <a href="#documents"><span class="nav-number">02</span> Planning documents</a>
+          <a href="#toolkit"><span class="nav-number">03</span> Your toolkit</a>
+          <a href="#mcp"><span class="nav-number">04</span> MCP helpers</a>
+          <a href="#publish"><span class="nav-number">05</span> Put it online</a>
+          <a href="#references"><span class="nav-number">06</span> Helpful links</a>
+        </nav>
+        <div class="side-progress" aria-label="Walkthrough progress">
+          <div class="progress-head"><span>Your progress</span><span id="progress-count">0 / 6</span></div>
+          <div class="progress-track" role="progressbar" aria-label="Walkthrough completion" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
+          <p class="progress-help">Saved in this browser on this device.</p>
+        </div>
+      </aside>
+
+      <main>
+        <section class="section" id="workflow" aria-labelledby="workflow-title">
+          <div class="section-heading">
+            <span class="section-index">01</span>
+            <div><h2 id="workflow-title">A good first project is small.</h2><p>Six steps take you from a rough idea to something you can show.</p></div>
+          </div>
+          <div class="callout"><span class="callout-icon" aria-hidden="true">✳</span><span><strong>Keep a human in the loop.</strong> Treat AI-generated plans and code as drafts. Ask a teacher, mentor, teammate, or project owner to check the goal, scope, safety, and assumptions before building.</span></div>
+          <div class="steps" id="checklist">
+            <label class="step"><input type="checkbox" data-check="idea"><span><h3>1. Say what you want to improve</h3><p>Who has the problem? What do they need to do? What would a helpful result look like?</p></span><span class="step-tag">Start in plain language</span></label>
+            <label class="step"><input type="checkbox" data-check="audience"><span><h3>2. Pick a real audience and a tiny first version</h3><p>Choose one type of user and one core task. Save “nice to have” ideas for later.</p></span><span class="step-tag">Keep the scope small</span></label>
+            <label class="step"><input type="checkbox" data-check="concept"><span><h3>3. Draft a concept and ask for review</h3><p>Write a CONCEPT-IDEA.md, then invite a human to point out gaps or risks.</p></span><span class="step-tag">Human review</span></label>
+            <label class="step"><input type="checkbox" data-check="spec"><span><h3>4. Agree on what “done” means</h3><p>Turn the reviewed idea into a SPECIFICATION.md and a short, ordered plan.</p></span><span class="step-tag">Agree before coding</span></label>
+            <label class="step"><input type="checkbox" data-check="build"><span><h3>5. Build one piece, check it, repeat</h3><p>Use VS Code and an AI assistant as helpers. Test each small change and ask for explanations.</p></span><span class="step-tag">Learn as you go</span></label>
+            <label class="step"><input type="checkbox" data-check="share"><span><h3>6. Publish, get feedback, improve</h3><p>Use GitHub Pages for a static website, then share it with your audience and gather feedback.</p></span><span class="step-tag">Share a first version</span></label>
+          </div>
+        </section>
+
+        <section class="section" id="documents" aria-labelledby="documents-title">
+          <div class="section-heading">
+            <span class="section-index">02</span>
+            <div><h2 id="documents-title">Give the idea a shape.</h2><p>These Markdown files make the project understandable before anyone starts building.</p></div>
+          </div>
+          <div class="callout"><span class="callout-icon" aria-hidden="true">↻</span><span><strong>Suggested review loop:</strong> ask AI to create a first draft from your answers, read every line, and have a human review accuracy, missing details, and risks. Revise and approve the documents before using them to guide implementation.</span></div>
+          <div class="doc-list">
+            <details class="doc">
+              <summary><span class="doc-title"><span class="doc-icon" aria-hidden="true">✳</span><span><strong>CONCEPT-IDEA.md</strong><small>The “why” and the opportunity</small></span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+              <div class="doc-body"><p>Start here when the project is still an idea. Keep it readable for someone who does not write code.</p>
+                <pre id="concept-template"># Concept idea: [working title]
+
+## The opportunity
+What situation or problem made us think of this?
+
+## Who it is for
+Who experiences this? What do we know, and what are we assuming?
+
+## The idea
+In a few sentences, what might we make or change?
+
+## Why it could help
+What would be better for the intended audience?
+
+## First version
+What is the smallest useful thing we can try?
+
+## Open questions and risks
+What should we investigate or ask a person before we proceed?
+
+## Review
+Reviewer / date:
+Changes requested:</pre>
+                <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="concept-template" type="button">Copy template</button></div>
+                <span class="mini-label">Ask an AI assistant</span>
+                <pre id="concept-prompt">Help me draft a CONCEPT-IDEA.md for this project using only the information I give you. Ask me questions one at a time if key facts are missing. Clearly label assumptions and unanswered questions; do not invent facts. Keep the first version small and describe this as a draft for human review. My idea: [describe it in your own words].</pre>
+                <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="concept-prompt" type="button">Copy prompt</button></div>
+              </div>
+            </details>
+            <details class="doc">
+              <summary><span class="doc-title"><span class="doc-icon" aria-hidden="true">▤</span><span><strong>SPECIFICATION.md</strong><small>The “what” and how to tell it works</small></span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+              <div class="doc-body"><p>Write this after the concept is reviewed. Describe the expected behavior, not a list of technologies you do not yet understand.</p>
+                <pre id="spec-template"># Specification: [working title]
+
+## Purpose and audience
+## Goals
+- [A result a user can observe]
+
+## Out of scope
+- [Something deliberately not included in v1]
+
+## User experience
+What can a person do, in what order?
+
+## Requirements
+- [ ] [A specific, testable behavior]
+
+## Content and data
+What information is shown or collected? Is any of it sensitive?
+
+## Accessibility and privacy
+How will people use this with different needs? What data should never be collected?
+
+## Acceptance checks
+- [ ] [A clear way to confirm a requirement works]
+
+## Decisions and open questions
+
+## Human review
+Reviewer / date / requested changes:</pre>
+                <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="spec-template" type="button">Copy template</button></div>
+                <span class="mini-label">Ask an AI assistant</span>
+                <pre id="spec-prompt">Turn my human-reviewed concept into a draft SPECIFICATION.md. Ask clarifying questions for ambiguity; distinguish confirmed facts from assumptions. Write small, testable requirements and acceptance checks. Include accessibility, privacy, and out-of-scope sections. Do not choose extra features or make technical decisions without asking. This is a draft for human review. Concept: [paste reviewed concept].</pre>
+                <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="spec-prompt" type="button">Copy prompt</button></div>
+              </div>
+            </details>
+            <details class="doc">
+              <summary><span class="doc-title"><span class="doc-icon" aria-hidden="true">☷</span><span><strong>PLAN.md</strong><small>A short path to a working first version</small></span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+              <div class="doc-body"><p>Choose PLAN.md when you want a short sequence of milestones with a clear beginning and end.</p>
+                <pre id="plan-template"># Project plan: [working title]
+
+## Milestone 1: [small outcome]
+- [ ] Task — how we will check it
+
+## Milestone 2: [next outcome]
+- [ ] Task — how we will check it
+
+## Milestone 3: [share and learn]
+- [ ] Test with [audience / reviewer]
+- [ ] Record feedback and decide what is next
+
+## Dependencies or help needed
+## Risks and fallback
+## Next review date:</pre>
+                <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="plan-template" type="button">Copy template</button></div>
+              </div>
+            </details>
+            <details class="doc">
+              <summary><span class="doc-title"><span class="doc-icon" aria-hidden="true">☑</span><span><strong>BACKLOG.md</strong><small>A queue of tasks for ongoing work</small></span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+              <div class="doc-body"><p>Choose BACKLOG.md when the work will evolve. Keep tasks concrete, prioritized, and small enough to finish and verify.</p>
+                <pre id="backlog-template"># Backlog: [working title]
+
+## Now
+- [ ] [Small task] — Done when: [observable check]
+
+## Next
+- [ ] [Small task] — Done when: [observable check]
+
+## Later / ideas
+- [ ] [Idea not yet agreed for v1]
+
+## Blocked / questions
+- [ ] [Question] — Ask: [person or source]
+
+## Review notes
+Date / reviewer / decisions:</pre>
+                <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="backlog-template" type="button">Copy template</button></div>
+              </div>
+            </details>
+          </div>
+          <p class="mcp-note" style="margin-top:12px">You do not need every file on day one: start with concept + specification, then choose either a milestone plan or a task backlog. Keep the files at the top level of your project so your team can find them.</p>
+        </section>
+
+        <section class="section" id="toolkit" aria-labelledby="toolkit-title">
+          <div class="section-heading">
+            <span class="section-index">03</span>
+            <div><h2 id="toolkit-title">A toolkit that grows with you.</h2><p>Start with the basics. Add AI and extensions when they solve a real problem.</p></div>
+          </div>
+          <div class="tool-list">
+            <article class="tool"><span class="tool-icon" aria-hidden="true">⌘</span><div><span class="pill">Your workspace</span><h3>Visual Studio Code</h3><p>A free code editor. Open your project folder, edit Markdown and website files, use the built-in terminal only when a guide asks you to, and keep changes visible. Install from the official site; start with no extensions or add only trusted ones.</p></div><a href="https://code.visualstudio.com/docs/getstarted/getting-started" target="_blank" rel="noreferrer">Getting started ↗</a></article>
+            <article class="tool"><span class="tool-icon" aria-hidden="true">⌂</span><div><span class="pill">Save &amp; share</span><h3>GitHub + GitHub Pages</h3><p>GitHub stores your project and its history online. Pages can publish a static site from a repository—handy for dashboards and portfolios. A repository can be public or private; a published site should contain only information you intend to share.</p></div><a href="https://docs.github.com/en/pages/getting-started-with-github-pages" target="_blank" rel="noreferrer">Pages guide ↗</a></article>
+            <article class="tool"><span class="tool-icon" aria-hidden="true">✦</span><div><span class="pill">AI pair helper</span><h3>GitHub Copilot for students</h3><p>Eligible students may be able to access Copilot through GitHub Education. Check current eligibility, included features, model access, and terms on GitHub—these can change. Ask it to explain unfamiliar code, draft tests, or suggest a small change; review and test everything.</p></div><a href="https://education.github.com/pack" target="_blank" rel="noreferrer">Student benefits ↗</a></article>
+            <article class="tool"><span class="tool-icon" aria-hidden="true">◉</span><div><span class="pill">Optional AI tools</span><h3>Claude Code or OpenAI tools</h3><p>Claude Code and OpenAI coding tools (such as Codex, where available) can help work with a project. Check current account access, pricing, data settings, supported regions, and setup before choosing. You do not need multiple paid subscriptions to start.</p></div><a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noreferrer">Claude Code docs ↗</a></article>
+          </div>
+          <div class="card-grid" style="margin-top:12px">
+            <article class="info-card"><p class="card-kicker">Try asking</p><h3>“Explain before you edit”</h3><p>“I’m new to this. Explain what this file does in everyday language. Before changing anything, tell me your plan and which requirements it supports.”</p></article>
+            <article class="info-card"><p class="card-kicker">Stay in control</p><h3>“Show me how to check it”</h3><p>Ask for one small change, a plain-language explanation, and a way to verify it. Do not paste passwords, API keys, private student data, or information you do not have permission to share.</p></article>
+          </div>
+        </section>
+
+        <section class="section" id="mcp" aria-labelledby="mcp-title">
+          <div class="section-heading">
+            <span class="section-index">04</span>
+            <div><h2 id="mcp-title">MCP helpers: optional connections.</h2><p>Connect an AI assistant to approved tools only when you know what it will access.</p></div>
+          </div>
+          <p class="mcp-note">MCP (Model Context Protocol) is a way for compatible AI apps to connect to tools and services. It is not a checklist of files every student must install. In VS Code, a project can define servers in <code>.vscode/mcp.json</code>; the assistant and installed VS Code version must support MCP. Start with none, then add one trusted server at a time.</p>
+          <div class="card-grid">
+            <article class="info-card"><p class="card-kicker">GitHub · when needed</p><h3>Work with repositories</h3><p>Can help an AI find repository information or work with issues and pull requests. Permissions depend on the server and your signed-in account. Prefer read-only access to start; review requested permissions and approve changes yourself.</p></article>
+            <article class="info-card"><p class="card-kicker">Tavily · when researching</p><h3>Search the web</h3><p>A web-search MCP server can find current sources. Useful for researching a topic or checking official documentation. Verify important claims at the source; search results can be wrong and queries may leave your computer.</p></article>
+            <article class="info-card"><p class="card-kicker">Filesystem · scoped access</p><h3>Read project files</h3><p>If your AI app needs a filesystem server, restrict its folder access to the project. Never grant an assistant your whole home folder just to edit one website.</p></article>
+            <article class="info-card"><p class="card-kicker">Browser testing · later</p><h3>Playwright or browser tools</h3><p>Can let an assistant interact with a local site for testing. Add only if you need it, use a non-sensitive test project, and keep actions visible. It is not needed to publish a simple static page.</p></article>
+          </div>
+          <details class="doc mcp-config">
+            <summary><span class="doc-title"><span class="doc-icon" aria-hidden="true">{"}"</span><span><strong>Example VS Code MCP configuration</strong><small>Illustrative only — check each provider’s current setup guide</small></span></span><span class="chevron" aria-hidden="true">⌄</span></summary>
+            <div class="doc-body">
+              <p>VS Code typically reads workspace MCP server settings from <code>.vscode/mcp.json</code>. These remote HTTP examples avoid putting an API key in the file; the provider may ask you to authorize access. Remote MCP requires a compatible VS Code version and provider sign-in. Server support and authentication can change, so check the official setup guide and configure only the server you need.</p>
+              <pre id="mcp-example">{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "tavily": {
+      "type": "http",
+      "url": "https://mcp.tavily.com/mcp/"
+    }
+  }
+}</pre>
+              <div class="copy-row"><span class="copy-status" aria-live="polite"></span><button class="copy-button" data-copy="mcp-example" type="button">Copy example</button></div>
+            </div>
+          </details>
+          <div class="mcp-warning"><strong>Before connecting anything:</strong> verify the publisher and exact server source; check what data it can read or change; understand its permissions; never put API keys in a committed file; and remove a server you no longer use. An MCP server can act with the access you grant it. Ask a teacher or administrator before installing tools on a managed device.</div>
+        </section>
+
+        <section class="section" id="publish" aria-labelledby="publish-title">
+          <div class="section-heading">
+            <span class="section-index">05</span>
+            <div><h2 id="publish-title">Publish a static site with Pages.</h2><p>A browser-only dashboard usually needs no server, build system, or package install.</p></div>
+          </div>
+          <div class="publish-list">
+            <article class="publish-item"><span class="publish-num">1</span><div><h3>Create your project folder</h3><p>In VS Code, open a new folder. Add an <code>index.html</code> file. Keep the reviewed <code>.md</code> planning documents alongside it if you want the project story and plans in the repository.</p></div></article>
+            <article class="publish-item"><span class="publish-num">2</span><div><h3>Preview and ask someone to check it</h3><p>Open the HTML in a browser or use VS Code’s preview options. Check on a phone-sized screen, use the keyboard, proofread, and ask a classmate or teacher to review it.</p></div></article>
+            <article class="publish-item"><span class="publish-num">3</span><div><h3>Create a GitHub repository</h3><p>Sign in at GitHub, create a new repository, and upload your files using GitHub’s browser interface or VS Code’s Source Control view. Choose visibility deliberately. Avoid uploading private data or secrets.</p></div></article>
+            <article class="publish-item"><span class="publish-num">4</span><div><h3>Turn on GitHub Pages</h3><p>In the repository, open <strong>Settings → Pages</strong>. Under build and deployment, choose <strong>Deploy from a branch</strong>, select your publishing branch (often <code>main</code>) and folder (often <code>/(root)</code>), then save. Follow the repository’s current Pages guide if the labels differ.</p></div></article>
+            <article class="publish-item"><span class="publish-num">5</span><div><h3>Visit the published link</h3><p>Wait for deployment, open the URL shown in the Pages settings, and test it. A repository website URL usually includes the repository name. Share only the published information you are comfortable making public.</p></div></article>
+            <article class="publish-item"><span class="publish-num">6</span><div><h3>Make a change and learn the loop</h3><p>Edit the file, upload or commit the change, and revisit the Pages URL. Ask users what is confusing; write the next small, testable improvement in your PLAN.md or BACKLOG.md.</p></div></article>
+          </div>
+          <div class="callout"><span class="callout-icon" aria-hidden="true">!</span><span><strong>Pages is for static sites.</strong> If your project needs private user accounts, a database, secret API keys, or a server, pause and get help choosing a secure hosting design. Do not put credentials in browser-side code.</span></div>
+        </section>
+
+        <section class="section" id="references" aria-labelledby="references-title">
+          <div class="section-heading">
+            <span class="section-index">06</span>
+            <div><h2 id="references-title">Learn from the source.</h2><p>Official getting-started pages and provider documentation.</p></div>
+          </div>
+          <div class="resource-list">
+            <a class="resource" href="https://code.visualstudio.com/docs/getstarted/getting-started" target="_blank" rel="noreferrer"><span>VS Code: Getting started</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://docs.github.com/en/get-started/start-your-journey" target="_blank" rel="noreferrer"><span>GitHub: Start your journey</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://docs.github.com/en/pages/getting-started-with-github-pages" target="_blank" rel="noreferrer"><span>GitHub Pages: Getting started</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://education.github.com/pack" target="_blank" rel="noreferrer"><span>GitHub Education: Student benefits</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://code.visualstudio.com/docs/copilot/overview" target="_blank" rel="noreferrer"><span>VS Code: Copilot overview</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://code.visualstudio.com/docs/copilot/customization/mcp-servers" target="_blank" rel="noreferrer"><span>VS Code: MCP servers</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://modelcontextprotocol.io/introduction" target="_blank" rel="noreferrer"><span>MCP: Introduction</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp" target="_blank" rel="noreferrer"><span>GitHub Copilot: Use MCP</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noreferrer"><span>Anthropic: Claude Code</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://openai.com/codex/" target="_blank" rel="noreferrer"><span>OpenAI: Codex</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://docs.tavily.com/documentation/mcp" target="_blank" rel="noreferrer"><span>Tavily: MCP setup</span><span aria-hidden="true">↗</span></a>
+            <a class="resource" href="https://github.com/github/github-mcp-server" target="_blank" rel="noreferrer"><span>GitHub: MCP server repository</span><span aria-hidden="true">↗</span></a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer">
+      <p>A starting point, not a substitute for your teacher, mentor, or project reviewer.</p>
+      <p><button type="button" class="reset-button" id="reset-progress">Reset checklist</button></p>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      const storageKey = "student-project-guide-checklist-v1";
+      const inputs = Array.from(document.querySelectorAll("[data-check]"));
+      const progressCount = document.getElementById("progress-count");
+      const progressFill = document.getElementById("progress-fill");
+      const progressBar = document.querySelector('[role="progressbar"]');
+
+      function updateProgress() {
+        const complete = inputs.filter((input) => input.checked).length;
+        progressCount.textContent = `${complete} / ${inputs.length}`;
+        progressFill.style.width = `${inputs.length ? (complete / inputs.length) * 100 : 0}%`;
+        progressBar.setAttribute("aria-valuenow", String(complete));
+      }
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        inputs.forEach((input) => { input.checked = saved[input.dataset.check] === true; });
+      } catch (error) {
+        document.querySelector(".progress-help").textContent = "Progress could not be loaded from this browser.";
+      }
+      updateProgress();
+
+      inputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          updateProgress();
+          try {
+            const state = Object.fromEntries(inputs.map((item) => [item.dataset.check, item.checked]));
+            localStorage.setItem(storageKey, JSON.stringify(state));
+            document.querySelector(".progress-help").textContent = "Saved in this browser on this device.";
+          } catch (error) {
+            document.querySelector(".progress-help").textContent = "Could not save progress; your browser may block local storage.";
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const text = document.getElementById(button.dataset.copy).textContent;
+          const status = button.parentElement.querySelector(".copy-status");
+          try {
+            await navigator.clipboard.writeText(text);
+            status.textContent = "Copied.";
+          } catch (error) {
+            status.textContent = "Copy unavailable here; select and copy the text above.";
+          }
+        });
+      });
+
+      document.getElementById("reset-progress").addEventListener("click", () => {
+        inputs.forEach((input) => { input.checked = false; });
+        updateProgress();
+        try {
+          localStorage.removeItem(storageKey);
+          document.querySelector(".progress-help").textContent = "Progress reset.";
+        } catch (error) {
+          document.querySelector(".progress-help").textContent = "Could not reset saved progress in this browser.";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
